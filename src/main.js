@@ -15,7 +15,12 @@ const blank = String.raw``;
 function renderKDML(code) {
   const previewEl = document.querySelector('#preview');
   const parsed = parseKDML(code);
-  parsed.splice(parsed.find(n => n.tag == 'head'), 1);
+  const headIndex = parsed.findIndex(n => n.tag == 'head');
+
+  if (headIndex != -1){
+    parsed.splice(headIndex, 1);
+  }
+
   const html = render(parsed);
   previewEl.innerHTML = html;
 }
