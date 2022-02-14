@@ -43,7 +43,7 @@ function findElement(tree, tag) {
 window.addEventListener('load', () => {
   const editorEl = document.querySelector('#editor');
 
-  let jar = CodeJar(editorEl, (e) => { Prism.highlightElement(e) });
+  let jar = CodeJar(editorEl, (e) => { Prism.highlightElement(e) }, { tab: '  ' });
 
   jar.onUpdate(code => {
     renderKDML(code);
