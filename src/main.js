@@ -14,10 +14,15 @@ const blank = String.raw``;
 
 function renderKDML(code) {
   const previewEl = document.querySelector('#preview');
+  const titleEl = document.querySelector('#document-title');
   const parsed = parseKDML(code);
   const headIndex = parsed.findIndex(n => n.tag == 'head');
 
-  if (headIndex != -1){
+  if (headIndex != -1) {
+    const head = parsed[headIndex];
+
+    const title = findElement(head.content, 'title');
+    titleEl.innerHTML = render(title.content);
     parsed.splice(headIndex, 1);
   }
 
@@ -25,10 +30,20 @@ function renderKDML(code) {
   previewEl.innerHTML = html;
 }
 
+function findElement(tree, tag) {
+  for (const e of tree) {
+    if (e.tag == tag) {
+      return e;
+    }
+  }
+
+  return null;
+}
+
 window.addEventListener('load', () => {
   const editorEl = document.querySelector('#editor');
 
-  let jar = CodeJar(editorEl, Prism.highlightElement);
+  let jar = CodeJar(editorEl, (e) => { Prism.highlightElement(e) });
 
   jar.onUpdate(code => {
     renderKDML(code);
